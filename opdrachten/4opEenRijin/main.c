@@ -10,7 +10,6 @@ int makeMove(bool turn);
 void printBoard(Board board);
 Board updateBoard(Board board, int move, bool turn);
 Board checkAndRemoveRows(Board *board, bool turn, int *p1, int *p2);
-bool checkWin(Board board, bool turn);
 
 int main() {
   int p1 = 0;
@@ -32,7 +31,6 @@ int main() {
     int move = makeMove(turn);
     board = updateBoard(board, move, turn);
 
-    // Check for win and update points
     board = checkAndRemoveRows(&board, turn, &p1, &p2);
 
   } while (1);

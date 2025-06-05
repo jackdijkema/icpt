@@ -1,0 +1,15 @@
+/Users/jack/Desktop/icpt/icpt-c-cpp/opdrachten/c# code editor/txtEditor/bin/Debug/net9.0/txtEditor
+/Users/jack/Desktop/icpt/icpt-c-cpp/opdrachten/c# code editor/txtEditor/bin/Debug/net9.0/txtEditor.deps.json
+/Users/jack/Desktop/icpt/icpt-c-cpp/opdrachten/c# code editor/txtEditor/bin/Debug/net9.0/txtEditor.runtimeconfig.json
+/Users/jack/Desktop/icpt/icpt-c-cpp/opdrachten/c# code editor/txtEditor/bin/Debug/net9.0/txtEditor.dll
+/Users/jack/Desktop/icpt/icpt-c-cpp/opdrachten/c# code editor/txtEditor/bin/Debug/net9.0/txtEditor.pdb
+/Users/jack/Desktop/icpt/icpt-c-cpp/opdrachten/c# code editor/txtEditor/obj/Debug/net9.0/txtEditor.GeneratedMSBuildEditorConfig.editorconfig
+/Users/jack/Desktop/icpt/icpt-c-cpp/opdrachten/c# code editor/txtEditor/obj/Debug/net9.0/txtEditor.AssemblyInfoInputs.cache
+/Users/jack/Desktop/icpt/icpt-c-cpp/opdrachten/c# code editor/txtEditor/obj/Debug/net9.0/txtEditor.AssemblyInfo.cs
+/Users/jack/Desktop/icpt/icpt-c-cpp/opdrachten/c# code editor/txtEditor/obj/Debug/net9.0/txtEditor.csproj.CoreCompileInputs.cache
+/Users/jack/Desktop/icpt/icpt-c-cpp/opdrachten/c# code editor/txtEditor/obj/Debug/net9.0/txtEditor.sourcelink.json
+/Users/jack/Desktop/icpt/icpt-c-cpp/opdrachten/c# code editor/txtEditor/obj/Debug/net9.0/txtEditor.dll
+/Users/jack/Desktop/icpt/icpt-c-cpp/opdrachten/c# code editor/txtEditor/obj/Debug/net9.0/refint/txtEditor.dll
+/Users/jack/Desktop/icpt/icpt-c-cpp/opdrachten/c# code editor/txtEditor/obj/Debug/net9.0/txtEditor.pdb
+/Users/jack/Desktop/icpt/icpt-c-cpp/opdrachten/c# code editor/txtEditor/obj/Debug/net9.0/txtEditor.genruntimeconfig.cache
+/Users/jack/Desktop/icpt/icpt-c-cpp/opdrachten/c# code editor/txtEditor/obj/Debug/net9.0/ref/txtEditor.dll

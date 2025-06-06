@@ -2,7 +2,6 @@
 
 class MainClass
 {
-
     public struct EditStruct
     {
         public int editLineNumber;
@@ -32,55 +31,51 @@ class MainClass
         while (true)
         {
             var key = Console.ReadKey(true);
-            if (key.Key == ConsoleKey.Escape) break;
 
-            if (key.Key == ConsoleKey.E)
+            switch (key.Key)
             {
-                editHistory = EditLine(lines);
-                lines = editHistory.newFile;
-            }
+                case ConsoleKey.E:
+                    editHistory = EditLine(lines);
+                    lines = editHistory.newFile;
+                    break;
 
-            if (key.Key == ConsoleKey.R)
-            {
+                case ConsoleKey.S:
+                    StreamWriter newFile2 = File.CreateText(path);
+                    foreach (var line in lines)
+                    {
+                        newFile2.WriteLine(line);
+                    }
+                    newFile2.Close();
+                    Console.Write("\n Saving... \n \n");
+                    Environment.Exit(0);
+                    break;
 
-                if (editHistory.newFile != null)
-                {
-                    lines = editHistory.newFile ?? lines;
-                    Console.Write($"\n Re-do... \n \n");
-                }
-                else
-                {
-                    Console.Write($"\n nothing to redo... \n \n");
-                }
-            }
+                case ConsoleKey.Escape:
+                    break;
 
-            if (key.Key == ConsoleKey.U)
-            {
-                if (editHistory.edit != null)
-                {
-                    lines = editHistory.beforeEditFile;
-                    Console.Write($" \nUndo... \n \n");
-                }
-                else
-                {
-                    Console.Write($" \n nothing to undo... \n \n");
-                }
-            }
+                case ConsoleKey.U:
+                    if (editHistory.edit != null)
+                    {
+                        lines = editHistory.beforeEditFile;
+                        Console.Write($" \nUndo... \n \n");
+                    }
+                    else
+                    {
+                        Console.Write($" \n nothing to undo... \n \n");
+                    }
+                    break;
 
-            if (key.Key == ConsoleKey.S)
-            {
-
-
-
-
-                StreamWriter newFile2 = File.CreateText(path);
-                foreach (var line in lines)
-                {
-                    newFile2.WriteLine(line);
-                }
-                newFile2.Close();
-                Console.Write("\n Saving... \n \n");
-                break;
+                case ConsoleKey.R:
+                    if (editHistory.newFile != null)
+                    {
+                        lines = editHistory.newFile ?? lines;
+                        Console.Write($"\n Re-do... \n \n");
+                    }
+                    else
+                    {
+                        Console.Write($"\n nothing to redo... \n \n");
+                    }
+                    break;
             }
             PrintLinesFromFile(lines);
         }
@@ -136,14 +131,14 @@ class MainClass
 
         if (!int.TryParse(input, out int selectLine) || selectLine <= 0 || selectLine > file.Length)
         {
-            Console.Write("Invalid line number. Try again.\n");
-            return editHistory;
+            Console.Write("Invalid line number. Try again. \n");
+            EditLine(file);
         }
 
         string history = oldFile[selectLine - 1];
         Console.Write("Editing line: \n");
-        Console.Write(file[selectLine - 1] + "\n");
-        Console.Write("Replace with: \n");
+        Console.Write(file[selectLine - 1] + "\n \n");
+        Console.Write("Replace with: \n \n");
 
         string edit = Console.ReadLine() ?? "";
 

@@ -1,22 +1,31 @@
-﻿using System.Collections;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
+﻿
 
 class MainClass
 {
+
+    public struct EditStruct
+    {
+        public int editLineNumber;
+        public string edit;
+        public string[] newFile;
+        public string[] beforeEditFile;
+    }
     static void Main(string[] args)
     {
         PrintIntro();
+        string path = args[0];
+        string[] lines = File.ReadAllLines(path.ToString());
+
+        EditStruct editHistory = new()
+        {
+            beforeEditFile = lines
+        };
 
         if (args.Length == 0)
         {
             Console.WriteLine("Please provide a file path as an argument.");
             return;
         }
-
-        string path = args[0];
-
-        string[] lines = File.ReadAllLines("test.txt");
 
         PrintLinesFromFile(lines);
 
@@ -27,14 +36,53 @@ class MainClass
 
             if (key.Key == ConsoleKey.E)
             {
-                lines = EditLine(lines);
+                editHistory = EditLine(lines);
+                lines = editHistory.newFile;
             }
 
+            if (key.Key == ConsoleKey.R)
+            {
+
+                if (editHistory.newFile != null)
+                {
+                    lines = editHistory.newFile ?? lines;
+                    Console.Write($"\n Re-do... \n \n");
+                }
+                else
+                {
+                    Console.Write($"\n nothing to redo... \n \n");
+                }
+            }
+
+            if (key.Key == ConsoleKey.U)
+            {
+                if (editHistory.edit != null)
+                {
+                    lines = editHistory.beforeEditFile;
+                    Console.Write($" \nUndo... \n \n");
+                }
+                else
+                {
+                    Console.Write($" \n nothing to undo... \n \n");
+                }
+            }
+
+            if (key.Key == ConsoleKey.S)
+            {
+
+
+
+
+                StreamWriter newFile2 = File.CreateText(path);
+                foreach (var line in lines)
+                {
+                    newFile2.WriteLine(line);
+                }
+                newFile2.Close();
+                Console.Write("\n Saving... \n \n");
+                break;
+            }
             PrintLinesFromFile(lines);
-
-            Console.WriteLine($"You pressed: {key.KeyChar} \n");
-
-
         }
     }
     public static void PrintIntro()
@@ -57,7 +105,6 @@ class MainClass
         Console.WriteLine();
     }
 
-
     public static void PrintLinesFromFile(string[] lines)
     {
         for (int i = 0; i < lines.Length; i++)
@@ -75,34 +122,37 @@ class MainClass
         }
         return true;
     }
-
-    struct EditStruct
+    public static EditStruct EditLine(string[] file)
     {
-        int editLineNumber;
-        string edit; 
-    }
-      
+        string[] oldFile = (string[])file.Clone();
 
-    public static string[] EditLine(string[] file)
-    {
-        Console.Write("Enter line number to edit: \n");
+        EditStruct editHistory = new()
+        {
+            beforeEditFile = oldFile
+        };
+
+        Console.Write("Enter line 2 edit: \n");
         string? input = Console.ReadLine();
-        int selectLine;
-        if (!int.TryParse(input, out selectLine) || selectLine <= 0 || selectLine > file.Length)
+
+        if (!int.TryParse(input, out int selectLine) || selectLine <= 0 || selectLine > file.Length)
         {
             Console.Write("Invalid line number. Try again.\n");
-            return file;
+            return editHistory;
         }
 
-        string history = file[selectLine - 1];
-        string edit = "";
-
+        string history = oldFile[selectLine - 1];
         Console.Write("Editing line: \n");
         Console.Write(file[selectLine - 1] + "\n");
         Console.Write("Replace with: \n");
-        edit = Console.ReadLine() ?? "";
+
+        string edit = Console.ReadLine() ?? "";
+
         file[selectLine - 1] = edit;
-        PrintLinesFromFile(file);
-        return file;
+
+        editHistory.edit = history;
+        editHistory.editLineNumber = selectLine;
+        editHistory.newFile = file;
+
+        return editHistory;
     }
 }

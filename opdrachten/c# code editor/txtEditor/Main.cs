@@ -3,13 +3,21 @@
 using System.Collections;
 using System.Runtime.InteropServices;
 
+List<string> lines = new List<string>();
 
 string path = args[0];
-string[] lines = File.ReadAllLines(path.ToString());
-int y = lines.Length - 1;
+string[] liners = File.ReadAllLines(path.ToString());
+
+foreach (var line in liners)
+{
+    lines.Add(line);
+}
+
+
+int y = lines.Count - 1;
 int x = 0 + 3;
 
-List<string> test = new List<string>();
+
 
 while (true)
 {
@@ -41,7 +49,7 @@ while (true)
 
     if (key.Key == ConsoleKey.DownArrow)
     {
-        if (y >= lines.Length - 1)
+        if (y >= lines.Count - 1)
         {
             y--;
         }
@@ -100,8 +108,18 @@ while (true)
                 continue;
             }
 
+
+            if (key.Key == ConsoleKey.Enter)
+            {
+                lines.Add(" ");
+                y++;
+                x = 3;
+                RedrawScreen(lines, y, x);
+                continue;
+            }
+
             string tempLine = lines[y];
-            tempLine = tempLine.Insert(x-3, key.KeyChar.ToString());
+            tempLine = tempLine.Insert(x - 3, key.KeyChar.ToString());
             lines[y] = tempLine;
             x++;
             RedrawScreen(lines, y, x);
@@ -110,11 +128,11 @@ while (true)
 
 }
 
-void RedrawScreen(string[] lines, int x, int y)
+void RedrawScreen(List<string> lines, int x, int y)
 {
     Console.Clear();
 
-    for (int i = 0; i < lines.Length; i++)
+    for (int i = 0; i < lines.Count; i++)
     {
         Console.WriteLine($"{i + 1}: {lines[i]}");
     }
@@ -122,7 +140,7 @@ void RedrawScreen(string[] lines, int x, int y)
     Console.SetCursorPosition(y, x);
 }
 
-void Save(string[] lines, string path)
+void Save(List<string> lines, string path)
 {
     StreamWriter newFile2 = File.CreateText(path);
     foreach (var line in lines)

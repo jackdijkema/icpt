@@ -1,9 +1,4 @@
-﻿
-
-using System.Collections;
-using System.Runtime.InteropServices;
-
-List<string> lines = new List<string>();
+﻿List<string> lines = [];
 
 string path = args[0];
 string[] liners = File.ReadAllLines(path.ToString());
@@ -12,12 +7,11 @@ foreach (var line in liners)
 {
     lines.Add(line);
 }
-
-
 int y = lines.Count - 1;
-int x = 0 + 3;
 
+int LINE_OFFSET = 3;
 
+int x = 0 + LINE_OFFSET;
 
 while (true)
 {
@@ -28,7 +22,7 @@ while (true)
 
     if (key.Key == ConsoleKey.RightArrow)
     {
-        if (x >= lines[y].Length + 3)
+        if (x >= lines[y].Length + LINE_OFFSET)
         {
             x--;
         }
@@ -38,7 +32,7 @@ while (true)
 
     if (key.Key == ConsoleKey.LeftArrow)
     {
-        if (x <= 3)
+        if (x <= LINE_OFFSET)
         {
             x++;
         }
@@ -62,6 +56,7 @@ while (true)
         y++;
         RedrawScreen(lines, y, x);
     }
+
     if (key.Key == ConsoleKey.UpArrow)
     {
         if (y <= 0)
@@ -71,6 +66,8 @@ while (true)
         y--;
         RedrawScreen(lines, y, x);
     }
+
+    if (key.Key == ConsoleKey.Escape) break;
 
     bool insertMode = false;
 
@@ -95,37 +92,45 @@ while (true)
 
             if (key.Key == ConsoleKey.Backspace)
             {
+
+                if (x == LINE_OFFSET && lines[y].Length == 0)
+                {
+                    if (y != 0)
+                    {
+                        lines.RemoveAt(y);
+                        lines[y - 1] += " ";
+                        y--;
+                        x = lines[y].Length + LINE_OFFSET;
+                        RedrawScreen(lines, y, x);
+                    }
+                    RedrawScreen(lines, y, x);
+                }
+
                 if (x > 0 + 3)
                 {
                     x--;
                     lines[y] = lines[y].Remove(x - 3, 1);
                 }
-                else
-                {
-                    continue;
-                }
                 RedrawScreen(lines, y, x);
                 continue;
             }
 
-
             if (key.Key == ConsoleKey.Enter)
             {
-                lines.Add(" ");
+                lines.Add("");
                 y++;
-                x = 3;
+                x = LINE_OFFSET;
                 RedrawScreen(lines, y, x);
                 continue;
             }
 
             string tempLine = lines[y];
-            tempLine = tempLine.Insert(x - 3, key.KeyChar.ToString());
+            tempLine = tempLine.Insert(x - LINE_OFFSET, key.KeyChar.ToString());
             lines[y] = tempLine;
             x++;
             RedrawScreen(lines, y, x);
         }
     }
-
 }
 
 void RedrawScreen(List<string> lines, int x, int y)
@@ -148,7 +153,4 @@ void Save(List<string> lines, string path)
         newFile2.WriteLine(line);
     }
     newFile2.Close();
-
-    Console.Clear();
-    Console.Write("\n Saving... \n \n");
 }

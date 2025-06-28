@@ -31,7 +31,7 @@ room1:
     }
 
 room2:
-    cout << "Room 2: You can go North-West (NW), East (E), or South-East (SE). You can also return West (W).\n";
+    cout << "Room 2: You can go North-West (NW), East (E) or South-East (SE). You can also return West (W).\n";
     cin >> direction;
     if (direction == "NW") {
         goto room3;

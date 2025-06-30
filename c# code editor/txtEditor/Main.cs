@@ -23,7 +23,7 @@ class TextEditor
 
         if (args.Length == 0)
         {
-            Console.WriteLine("You need to pass file as argument...");
+            Console.WriteLine("You need to pass file as argument... dotnet run <file>");
             return;
         }
 
@@ -110,11 +110,9 @@ class TextEditor
 
             if (key.Key == ConsoleKey.Escape) break;
 
-            bool insertMode = false;
-
             if (key.Key == ConsoleKey.I)
             {
-                insertMode = true;
+                bool insertMode = true;
 
                 RedrawScreen(lines, y, x);
                 while (insertMode)

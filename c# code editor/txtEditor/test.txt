@@ -1,4 +1,2 @@
-main ( string argv[])
-
-
-yo test
+string
+yo jack

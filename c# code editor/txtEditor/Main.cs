@@ -1,23 +1,24 @@
 ﻿using System.Net;
+using System.Collections.Generic;
 
 class TextEditor
 {
     struct HistoryStruct
     {
-        public string BeforeEdit;
-        public string AfterEdit;
+        public Stack<string> BeforeEdit;
+        public Stack<string> AfterEdit;
         public int EditLineNumber;
     }
 
     static void Main(string[] args)
     {
-        List<string> lines = [];
+        List<string> lines = []; 
 
         HistoryStruct historyStruct = new()
         {
-            BeforeEdit = "",
+            BeforeEdit = new Stack<string>(),
             EditLineNumber = 0,
-            AfterEdit = "" 
+            AfterEdit = new Stack<string>()
         };
 
         if (args.Length == 0)
@@ -28,7 +29,7 @@ class TextEditor
 
         string path = args[0];
 
-        string[] liners = File.ReadAllLines(path.ToString());
+        string[] liners = File.ReadAllLines(path);
 
         foreach (var line in liners)
         {
@@ -47,21 +48,20 @@ class TextEditor
             RedrawScreen(lines, y, x);
 
             if (key.Key == ConsoleKey.U)
-
             {
-                if (historyStruct.BeforeEdit == null) continue;
-                lines[historyStruct.EditLineNumber] = historyStruct.BeforeEdit;
+                if (historyStruct.BeforeEdit.Count == 0) continue;
+                lines[historyStruct.EditLineNumber] = historyStruct.BeforeEdit.Pop();
                 RedrawScreen(lines, y, x);
             }
 
             if (key.Key == ConsoleKey.R)
             {
-                if (historyStruct.AfterEdit == null) continue;
-                lines[historyStruct.EditLineNumber] = historyStruct.AfterEdit;
+                if (historyStruct.AfterEdit.Count == 0) continue;
+                lines[historyStruct.EditLineNumber] = historyStruct.AfterEdit.Pop();
                 RedrawScreen(lines, y, x);
             }
 
-            if (key.Key == ConsoleKey.RightArrow | key.Key == ConsoleKey.L)
+            if (key.Key == ConsoleKey.RightArrow || key.Key == ConsoleKey.L)
             {
                 if (x >= lines[y].Length + LINE_OFFSET)
                 {
@@ -71,7 +71,7 @@ class TextEditor
                 RedrawScreen(lines, y, x);
             }
 
-            if (key.Key == ConsoleKey.LeftArrow | key.Key == ConsoleKey.H)
+            if (key.Key == ConsoleKey.LeftArrow || key.Key == ConsoleKey.H)
             {
                 if (x <= LINE_OFFSET)
                 {
@@ -82,7 +82,7 @@ class TextEditor
                 RedrawScreen(lines, y, x);
             }
 
-            if (key.Key == ConsoleKey.DownArrow | key.Key == ConsoleKey.J)
+            if (key.Key == ConsoleKey.DownArrow || key.Key == ConsoleKey.J)
             {
                 if (y >= lines.Count - 1)
                 {
@@ -98,7 +98,7 @@ class TextEditor
                 RedrawScreen(lines, y, x);
             }
 
-            if (key.Key == ConsoleKey.UpArrow | key.Key == ConsoleKey.K)
+            if (key.Key == ConsoleKey.UpArrow || key.Key == ConsoleKey.K)
             {
                 if (y <= 0)
                 {
@@ -166,12 +166,12 @@ class TextEditor
                     }
 
                     string tempLine = lines[y];
-                    historyStruct.BeforeEdit = (string)lines[y].Clone();
+                    historyStruct.BeforeEdit.Push(tempLine);
                     historyStruct.EditLineNumber = y;
                     tempLine = tempLine.Insert(x - LINE_OFFSET, key.KeyChar.ToString());
                     lines[y] = tempLine;
                     x++;
-                    historyStruct.AfterEdit = (string)lines[y].Clone();
+                    historyStruct.AfterEdit.Push(tempLine);
                     RedrawScreen(lines, y, x);
                 }
             }
@@ -200,6 +200,3 @@ class TextEditor
         }
     }
 }
-
-
-
